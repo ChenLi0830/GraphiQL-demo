@@ -7,12 +7,9 @@ const {
     GraphQLSchema,
 } = graphql;
 
-const _ = require('lodash');
+require('es6-promise').polyfill();
+require('isomorphic-fetch');
 
-const users = [
-  {id: "123", firstName: "Brian", age:"36"},
-  {id: "121", firstName: "Rachel", age:"26"}
-];
 
 const UserType = new GraphQLObjectType({
   name: 'User', //这个是object名
@@ -30,7 +27,13 @@ const RootQuery = new GraphQLObjectType({
       type: UserType,
       args: { id: {type: GraphQLString} },
       resolve: (parentValue, args) => {
-        return _.find(users, {id: args.id});
+        return fetch(`http://localhost:3000/users/${args.id}`)
+            .then((response)=>{
+              if (response.status >= 400) {
+                throw new Error("Bad response from server");
+              }
+              return response.json();
+            });
       },
     }
   }
