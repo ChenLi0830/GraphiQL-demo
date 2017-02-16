@@ -1,7 +1,11 @@
 {
     "users": [
-        {"id": "123", "firstName": "Brian", "age":"36"},
-        {"id": "121", "firstName": "Rachel", "age":"26"},
-        {"id": "11", "firstName": "Alex", "age":"7"}
+        {"id": "123", "firstName": "Brian", "age":"36", "companyId": "1"},
+        {"id": "121", "firstName": "Rachel", "age":"26", "companyId": "5"},
+        {"id": "12", "firstName": "Alex", "age":"7", "companyId": "5"}
+    ],
+    "companies": [
+        {"id": "1", "name": "Apple", "description": "iphone"},
+        {"id": "5", "name": "Google", "description": "Google Search"}
     ]
 }

@@ -10,6 +10,14 @@ const {
 require('es6-promise').polyfill();
 require('isomorphic-fetch');
 
+const CompanyType = new GraphQLObjectType({
+  name: "Company",
+  fields: {
+    id: {type: GraphQLString},
+    name: {type: GraphQLString},
+    description: {type: GraphQLString},
+  }
+});
 
 const UserType = new GraphQLObjectType({
   name: 'User', //这个是object名
@@ -17,6 +25,19 @@ const UserType = new GraphQLObjectType({
     id: {type: GraphQLString},
     firstName: {type: GraphQLString},
     age: {type: GraphQLInt},
+    company: {
+      type: CompanyType,
+      resolve(parentValue, args){
+        console.log("parentValue.companyId", parentValue.companyId);
+        return fetch(`http://localhost:3000/companies/${parentValue.companyId}`)
+            .then((response)=>{
+              if (response.status >= 400) {
+                throw new Error("Bad response from server");
+              }
+              return response.json();
+            });
+      },
+    }
   }
 });
 
