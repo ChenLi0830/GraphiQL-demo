@@ -116,6 +116,26 @@ const mutation = new GraphQLObjectType({
               return response.json();
             });
       }
+    },
+    deleteUser: {
+      type: UserType,
+      args: {
+        id: {type: new GraphQLNonNull(GraphQLString)},
+      },
+      resolve(parentValue, args){
+        return fetch(`http://localhost:3000/users/${args.id}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+            .then((response) => {
+              if (response.status >= 400) {
+                throw new Error("Bad response from server");
+              }
+              return response.json();
+            });
+      }
     }
   },
 });
