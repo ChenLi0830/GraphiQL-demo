@@ -136,6 +136,30 @@ const mutation = new GraphQLObjectType({
               return response.json();
             });
       }
+    },
+    editUser: {
+      type: UserType,
+      args: {
+        id: {type: new GraphQLNonNull(GraphQLString)},
+        firstName: {type: GraphQLString},
+        age: {type: GraphQLInt},
+        companyId: {type: GraphQLString},
+      },
+      resolve(parentValue, args){
+        return fetch(`http://localhost:3000/users/${args.id}`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(args)
+        })
+            .then((response) => {
+              if (response.status >= 400) {
+                throw new Error("Bad response from server");
+              }
+              return response.json();
+            });
+      }
     }
   },
 });
